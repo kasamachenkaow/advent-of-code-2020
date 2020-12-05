@@ -17,16 +17,6 @@ notZeroProduct items = nonZero where
 notEmptyArray::[Int] -> Bool
 notEmptyArray items = not (null items)
 
--- findProductOfPairOf::([Int], Int, Int) -> [Int]
--- findProductOfPairOf (lists, sumOf, 2) = result where
---   result = head (filter nonZeroProduct validPairs)
---   sss = print validPairs
---   validPairs = transpose [lists, pairs, pairIndexExists]
---   pairIndexExists = map nothingToZero pairIndices
---   pairIndices =  let fiLists n = elemIndex n lists in map fiLists pairs
---   pairs = map (sumOf-) lists
--- findProductOfPairOf (lists, sumOf, itemCount) = let findOthers n = n : findProductOfPairOf (lists, sumOf-n, itemCount-1) in head (filter nonEmptyArray (map findOthers lists))
-
 findProductOfPairOf::([Int], Int, Int) -> [Int]
 findProductOfPairOf (lists, sumOf, 2) = do
   let pairs = map (sumOf-) lists
@@ -41,10 +31,10 @@ findProductOfPairOf (lists, sumOf, itemCount) = do
 
 main::IO ()
 main = do
-  inputs <- lines <$> readFile "./input"
+  inputs <- lines <$> readFile "./input3"
   let lists = let toI s = read s :: Int in map toI inputs
-  let pairs = (findProductOfPairOf (lists, 2020, 3))
-  traceShowM "pairs"
-  traceShowM pairs
+  let pairs = (findProductOfPairOf (lists, 2020, 5))
+  -- traceShowM "pairs"
+  -- traceShowM pairs
   let result = product pairs
   print result
