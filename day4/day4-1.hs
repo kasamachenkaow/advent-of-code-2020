@@ -4,6 +4,7 @@ import Data.List.Split
 getKeys::String -> String
 getKeys keyValue = take 3 keyValue
 
+-- TO-DO: Find the better way to not need to sort first
 validate::[String] -> Bool
 validate ["byr", "cid", "ecl", "eyr", "hcl", "hgt", "iyr", "pid"] = True
 validate ["byr", "ecl", "eyr", "hcl", "hgt", "iyr", "pid"] = True

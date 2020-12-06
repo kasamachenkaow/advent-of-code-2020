@@ -1,0 +1,4 @@
+dependencies:
+  - split
+  - regex-tdfa
+  - regex-tdfa-text
