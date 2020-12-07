@@ -12,7 +12,7 @@ toKeyValueTuple (x : y : z : ':' : xs) = ([x, y, z], xs)
 validateRequiredKeys :: [String] -> Bool
 validateRequiredKeys ["byr", "cid", "ecl", "eyr", "hcl", "hgt", "iyr", "pid"] = True
 validateRequiredKeys ["byr", "ecl", "eyr", "hcl", "hgt", "iyr", "pid"] = True
-validateRequiredKeys xs = False
+validateRequiredKeys _ = False
 
 validateValue :: (String, String) -> Bool
 validateValue ("byr", value) = matchTest regex value
