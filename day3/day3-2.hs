@@ -1,17 +1,17 @@
-import Data.List
-import Data.List.Split
+import Data.List ()
+import Data.List.Split ()
 
-removeEvenItem::[a] -> [a]
-removeEvenItem (x:y:xs) = x : removeEvenItem xs
-removeEvenItem xs = []
+removeEvenItem :: [a] -> [a]
+removeEvenItem (x : _ : xs) = x : removeEvenItem xs
+removeEvenItem _ = []
 
-boolToInt::Bool -> Int
+boolToInt :: Bool -> Int
 boolToInt True = 1
 boolToInt False = 0
 
-countTrees::Int -> [String] -> Int -> Int
-countTrees pos (m:ms) stepRight = boolToInt (m !! pos == '#') + (countTrees ((pos + stepRight) `mod` (length m)) ms stepRight)
-countTrees pos ms stepRight = 0
+countTrees :: Int -> [String] -> Int -> Int
+countTrees pos (m : ms) stepRight = boolToInt (m !! pos == '#') + countTrees ((pos + stepRight) `mod` length m) ms stepRight
+countTrees _ _ _ = 0
 
 main :: IO ()
 main = do

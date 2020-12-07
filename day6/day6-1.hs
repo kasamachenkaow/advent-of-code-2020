@@ -2,8 +2,8 @@ import Data.List
 import Data.List.Split
 
 unionCharList :: [[Char]] -> [Char]
-unionCharList (x:xs) = union x (unionCharList xs)
-unionCharList xs = []
+unionCharList (x : xs) = x `union` unionCharList xs
+unionCharList _ = []
 
 main :: IO ()
 main = do

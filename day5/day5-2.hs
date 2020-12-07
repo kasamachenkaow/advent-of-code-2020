@@ -1,15 +1,15 @@
-import Data.Char  (digitToInt)
-import Data.Maybe (listToMaybe)
-import Numeric    (readInt)
+import Data.Char (digitToInt)
 import Data.List
+import Data.Maybe (listToMaybe)
+import Numeric (readInt)
 
 maybeToInt :: Maybe Int -> Int
 maybeToInt (Just n) = n
-maybeToInt x = 0
+maybeToInt _ = 0
 
 replaceChar :: Char -> Char -> [Char] -> [Char]
-replaceChar old new (x:xs) = (if x == old then new else x) : replaceChar old new xs
-replaceChar old new xs = xs
+replaceChar old new (x : xs) = (if x == old then new else x) : replaceChar old new xs
+replaceChar _ _ xs = xs
 
 readBin :: Integral a => String -> Maybe a
 readBin = fmap fst . listToMaybe . readInt 2 (`elem` "01") digitToInt
@@ -21,8 +21,8 @@ toSeatId :: (Int, Int) -> Int
 toSeatId (row, seat) = row * 8 + seat
 
 findMissingSeatId :: [Int] -> Int
-findMissingSeatId (x1:x2:xs) = (if x1+1 == x2 then 0 else x1+1) + (findMissingSeatId (x2:xs))
-findMissingSeatId xs = 0
+findMissingSeatId (x1 : x2 : xs) = (if x1 + 1 == x2 then 0 else x1 + 1) + findMissingSeatId (x2 : xs)
+findMissingSeatId _ = 0
 
 main :: IO ()
 main = do
@@ -32,7 +32,7 @@ main = do
   let replaceLwith0 = replaceChar 'L' '0'
   let replaceRwith1 = replaceChar 'R' '1'
   let replaceFBLR = replaceRwith1 . replaceLwith0 . replaceBwith1 . replaceFwith0
-  let binaryInputs  = map replaceFBLR rawInputs
+  let binaryInputs = map replaceFBLR rawInputs
   let binaryRowAndSeat = map (splitAt 7) binaryInputs
   let decimalRowAndSeat = map toDecimalRowSeat binaryRowAndSeat
   let seatIds = map toSeatId decimalRowAndSeat

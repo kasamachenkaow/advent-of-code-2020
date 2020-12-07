@@ -2,8 +2,8 @@ import Data.List
 import Data.List.Split
 
 intersectCharList :: [[Char]] -> [Char]
-intersectCharList (x:xs) = intersect x (intersectCharList xs)
-intersectCharList xs = ['a'..'z']
+intersectCharList (x : xs) = x `intersect` intersectCharList xs
+intersectCharList _ = ['a' .. 'z']
 
 main :: IO ()
 main = do
