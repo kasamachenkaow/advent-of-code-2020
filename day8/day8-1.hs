@@ -9,10 +9,10 @@ getNewOffset :: (String, Int) -> Int -> Int
 getNewOffset ("jmp", a) offset = offset + a
 getNewOffset _ offset = offset + 1
 
-getInstructionsFrom :: [(String, Int)] -> Int -> [Int] -> [(String, Int)]
-getInstructionsFrom instructions offset history =
+getSequentInstructionsFrom :: [(String, Int)] -> Int -> [Int] -> [(String, Int)]
+getSequentInstructionsFrom instructions offset history =
   if (offset `notElem` history) && (offset < length instructions)
-    then instruction : getInstructionsFrom instructions newOffset (offset : history)
+    then instruction : getSequentInstructionsFrom instructions newOffset (offset : history)
     else []
   where
     newOffset = getNewOffset instruction offset
@@ -26,7 +26,7 @@ main = do
   rawInputs <- lines <$> readFile "./input"
   let splitInputs = map (splitOn " ") rawInputs -- [["com", "123"]]
   let instructions = map toInstructions splitInputs -- [("com", 123)]
-  let nextInstructions = getInstructionsFrom instructions 0 []
+  let nextInstructions = getSequentInstructionsFrom instructions 0 []
   let accInstructions = [(i, a) | (i, a) <- nextInstructions, i == "acc"]
   let accArguments = map toArgument accInstructions
   let total = sum accArguments
