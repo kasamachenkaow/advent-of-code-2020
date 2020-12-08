@@ -9,13 +9,13 @@ getNewOffset :: (String, Int) -> Int -> Int
 getNewOffset ("jmp", a) offset = offset + a
 getNewOffset _ offset = offset + 1
 
-getNextInstructions :: [(String, Int)] -> Int -> [Int] -> ([(String, Int)], Bool)
-getNextInstructions instructions offset history
+getInstructionsFrom :: [(String, Int)] -> Int -> [Int] -> ([(String, Int)], Bool)
+getInstructionsFrom instructions offset history
   | offset `elem` history = ([], True)
   | offset >= length instructions = ([], False)
   | otherwise =
     let (nextInstructions, infinite) =
-          getNextInstructions instructions newOffset (offset : history)
+          getInstructionsFrom instructions newOffset (offset : history)
      in (instruction : nextInstructions, infinite)
   where
     newOffset = getNewOffset instruction offset
@@ -25,13 +25,13 @@ getFiniteInstructions :: [(String, Int)] -> Int -> [(String, Int)]
 getFiniteInstructions instructions offset
   | operation == "nop" =
     let newInstructions = left ++ [("jmp", argument)] ++ tail right
-     in let (newNextInstructions, infinite) = getNextInstructions newInstructions 0 []
+     in let (newNextInstructions, infinite) = getInstructionsFrom newInstructions 0 []
          in if infinite
               then getFiniteInstructions instructions (offset + 1)
               else newNextInstructions
   | operation == "jmp" =
     let newInstructions = left ++ [("nop", argument)] ++ tail right
-     in let (newNextInstructions, infinite) = getNextInstructions newInstructions 0 []
+     in let (newNextInstructions, infinite) = getInstructionsFrom newInstructions 0 []
          in if infinite
               then getFiniteInstructions instructions (offset + 1)
               else newNextInstructions
