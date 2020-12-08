@@ -23,13 +23,13 @@ getNextInstructions instructions offset history
 
 getFiniteInstructions :: [(String, Int)] -> Int -> [(String, Int)]
 getFiniteInstructions instructions offset
-  | command == "nop" =
+  | operation == "nop" =
     let newInstructions = left ++ [("jmp", argument)] ++ tail right
      in let (newNextInstructions, infinite) = getNextInstructions newInstructions 0 []
          in if infinite
               then getFiniteInstructions instructions (offset + 1)
               else newNextInstructions
-  | command == "jmp" =
+  | operation == "jmp" =
     let newInstructions = left ++ [("nop", argument)] ++ tail right
      in let (newNextInstructions, infinite) = getNextInstructions newInstructions 0 []
          in if infinite
@@ -39,7 +39,7 @@ getFiniteInstructions instructions offset
   | otherwise = getFiniteInstructions instructions (offset + 1)
   where
     (left, right) = splitAt offset instructions
-    (command, argument) = instructions !! offset
+    (operation, argument) = instructions !! offset
 
 toArgument :: (String, Int) -> Int
 toArgument (_, a) = a
