@@ -10,12 +10,12 @@ toMultiplier 2 = 2
 toMultiplier 3 = 4
 toMultiplier 4 = 7
 toMultiplier 5 = 13
-toMultiplier 6 = 23
+toMultiplier 6 = 24
 toMultiplier _ = 0
 
 main :: IO ()
 main = do
-  rawInputs <- lines <$> readFile "./input"
+  rawInputs <- lines <$> readFile "./input4"
   let numbers = map toInt rawInputs
   let outletJoltage = 0
   let adapterJoltages = sort numbers
