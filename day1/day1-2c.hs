@@ -1,5 +1,4 @@
-toInt :: String -> Int
-toInt s = read s :: Int
+import Common
 
 main :: IO ()
 main = do
