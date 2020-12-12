@@ -28,9 +28,9 @@ findProductOfPairOf (lists, sumOf, itemCount) = do
 
 main :: IO ()
 main = do
-  inputs <- lines <$> readFile "./input3"
+  inputs <- lines <$> readFile "./input"
   let lists = let toI s = read s :: Int in map toI inputs
-  let pairs = findProductOfPairOf (lists, 2020, 5)
+  let pairs = findProductOfPairOf (lists, 2020, 3)
   -- traceShowM "pairs"
   -- traceShowM pairs
   let result = product pairs

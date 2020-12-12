@@ -7,7 +7,7 @@ nothingToZero (Just _) = 1
 findPairsOf :: Int -> [Int] -> [[Int]]
 findPairsOf s (x : xs) =
   ( let remaining = s - x
-     in [x, remaining, nothingToZero (elemIndex remaining xs)]
+     in [x, remaining, nothingToZero (remaining `elemIndex` xs)]
   ) :
   findPairsOf s xs
 findPairsOf _ _ = []

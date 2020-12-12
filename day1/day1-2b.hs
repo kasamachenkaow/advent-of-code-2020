@@ -7,7 +7,7 @@ nothingToZero (Just _) = 1
 findPairsOf :: Int -> [Int] -> [[Int]]
 findPairsOf sum (x : xs) =
   ( let remaining = sum - x
-     in [x, remaining, nothingToZero (elemIndex remaining xs)]
+     in [x, remaining, nothingToZero (remaining `elemIndex` xs)]
   ) :
   findPairsOf sum xs
 findPairsOf _ _ = []
@@ -23,8 +23,8 @@ findCombinationsOf _ _ _ = []
 
 main :: IO ()
 main = do
-  inputs <- lines <$> readFile "./input3"
+  inputs <- lines <$> readFile "./input"
   let lists = let toI s = read s :: Int in map toI inputs
-  let findNCombinationsOf2020 = findCombinationsOf 2020
-  let result = findNCombinationsOf2020 5 lists
+  let find5CombinationsOf2020 = findCombinationsOf 2020 3
+  let result = find5CombinationsOf2020 lists
   print $ filter (> 0) (map product result)
