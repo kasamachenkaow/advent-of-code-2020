@@ -1,3 +1,5 @@
+-- Far better performance, time complexity: O(n), Space O(n)
+
 import Data.List
 import Data.List.Split
 
@@ -11,7 +13,7 @@ trifib 3 = 2
 trifib n = sum [trifib (n-1), trifib (n-2), trifib (n-3)]
 
 toMultiplier :: Int -> Int
-toMultiplier n = trifib n+1
+toMultiplier n = trifib (n+1)
 
 main :: IO ()
 main = do

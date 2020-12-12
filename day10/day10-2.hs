@@ -1,3 +1,5 @@
+-- Time complexity O(n), Space O(n)
+
 import Data.List
 import Data.List.Split
 
