@@ -4,14 +4,14 @@ import Data.List.Split
 toInt :: String -> Int
 toInt s = read s :: Int
 
+trifib :: Int -> Int
+trifib 1 = 1
+trifib 2 = 1
+trifib 3 = 2
+trifib n = sum [trifib (n-1), trifib (n-2), trifib (n-3)]
+
 toMultiplier :: Int -> Int
-toMultiplier 1 = 1
-toMultiplier 2 = 2
-toMultiplier 3 = 4
-toMultiplier 4 = 7
-toMultiplier 5 = 13
-toMultiplier 6 = 24
-toMultiplier _ = 0
+toMultiplier n = trifib n+1
 
 main :: IO ()
 main = do
