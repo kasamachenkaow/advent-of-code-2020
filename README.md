@@ -12,3 +12,7 @@ cabal install --lib [lib_name]
 cd ../dayX
 runhaskell [dayX-Y].hs
 ```
+
+## Issues
+- 13.2 unfinished
+- 14.2 bad performance
