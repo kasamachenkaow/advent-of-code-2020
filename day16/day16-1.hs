@@ -1,4 +1,4 @@
--- O(n^2)
+-- O(n)
 import Common
 import Data.List.Split
 
