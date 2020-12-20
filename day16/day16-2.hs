@@ -15,12 +15,6 @@ ruleStringToRules s = rules
     ranges = map (map toInt . splitOn "-") rawRanges
     rawRanges = splitOn " or " s
 
-getOrderClasses :: [(String, [Int])] -> [[Int]] -> [(String, [Int])] -> [String]
-getOrderClasses rules (g:gs) ((c, r):cs)
-  | all (`elem` r) g = c : getOrderClasses (delete (c, r) rules) gs (delete (c, r) rules)
-  | otherwise = getOrderClasses rules (g:gs) cs
-getOrderClasses _ _ _ = ["suck"]
-
 removeSingle :: [[String]] -> [String] -> [[String]]
 removeSingle list (s:ss) = removeSingle reduced ss
   where

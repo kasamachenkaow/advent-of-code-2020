@@ -12,6 +12,9 @@ validate ([x,xi]:xs) n
   | otherwise = False
 validate _ _ = True
 
+lastDigitsOf :: Int -> [Int]
+lastDigitsOf n = take 10 [ x `mod` 10 | x <- [n, n*2..n*10]]
+
 main :: IO ()
 main = do
   rawInputs <- readInputByLine "./input2"
