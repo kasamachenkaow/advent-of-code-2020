@@ -1,31 +1,43 @@
 import Common
-import Data.List ( transpose )
-import Data.Map (Map)
+import Data.List ( transpose, elemIndices )
+import Data.Map (Map, mapAccum, findWithDefault)
 import qualified Data.Map as Map
 
-toKey :: Int -> Int -> Int -> String
-toKey x y z = show x ++ "," ++ show y ++ "," ++ show z
+findWithDefaultInactive = findWithDefault '.'
 
--- getPointsFromLevel :: Int -> [(x,y,z)]
--- getPointsFromLevel level = []
+toKey :: (Int, Int, Int) -> String
+toKey (x, y, z) = show x ++ "," ++ show y ++ "," ++ show z
 
--- getNeighbors :: Map String Char -> (x,y,z) -> [Char]
--- getNeighbors map centerPoint = []
+getPointsFromLevel :: Int -> [(Int, Int, Int)]
+getPointsFromLevel level = [(x, y, z) | x <- [-level..level], y <- [-level..level], z <- [-level..level]]
 
--- transform :: ??
-  -- start from the origin [0,0,0]
-  -- each level get points using `getPointsFromLevel()`
-  -- transform all the points using `getNeighbors()` check with rules
-  -- loop to N level (N = the outmost level)
+getNeighbors :: Map String Char -> (Int, Int, Int) -> [Char]
+getNeighbors map (x, y, z) = [ findWithDefaultInactive (toKey (x',y',z')) map | x' <- [x-1..x+1], y' <- [y-1..y+1], z' <- [z-1..z+1], x' /= x || y' /= y || z' /= z]
 
-transform :: Map String Char -> Int -> Map String Char
-transform universe cycle
-  | 
+tryActivate :: Char -> [Char] -> Char
+tryActivate '#' neighbors
+  | actives >= 2 && actives <= 3 = '#'
+  | otherwise = '.'
+  where actives = length $ '#' `elemIndices` neighbors
+tryActivate '.' neighbors
+  | actives == 3 = '#'
+  | otherwise = '.'
+  where actives = length $ '#' `elemIndices` neighbors
 
-loopResult :: (a -> a) -> a -> Int
+transform :: (Int, Map String Char) ->  (Int, Map String Char)
+transform (level, universe) = (level+1, newUniverse)
+  where
+    newUniverse = Map.fromList [
+      let key = toKey p in 
+        (key, ((tryActivate (findWithDefaultInactive key universe)) . getNeighborsWithMap) p) 
+        | p <- getPointsFromLevel level
+      ]
+    getNeighborsWithMap = getNeighbors universe
+    
+loopResult :: (a -> a) -> a -> Int -> a
 loopResult f arg round
   | round > 0 = loopResult f (f arg) (round-1)
-  | otherwise = a
+  | otherwise = arg
 
 main :: IO ()
 main = do
@@ -36,12 +48,23 @@ main = do
   let yRadius = yLength `div` 2
   let xRadius = xLength `div` 2
   -- creat the init using x,y,z as a key and shift x,y to origin [0,0,0]
-  let points = Map.fromList [(toKey (x-xRadius) (y-yRadius) 0, input !! x !! y) | x <- [0..xLength-1], y <- [0..yLength-1]]
+  let points = Map.fromList [(toKey (x-xRadius, y-yRadius, 0), input !! x !! y) | x <- [0..xLength-1], y <- [0..yLength-1]]
   -- check the outmost level of init, attach it to the map as well
-  let universe = (xRadius, points)
+  let maxLevel = (ceiling (fromIntegral (xLength-1) / 2))+1
+  let universe = (maxLevel, points)
+  let newUniverse = loopResult transform universe 6
   -- `transform()` N rounds
   -- get all points from the latest transformed result
   -- count '#'
+  let f a b = (a+(if b == '#' then 1 else 0), b)
+  let allActiveCount = fst $ mapAccum f 0 (snd newUniverse)
   print rawInputs
   print input
+  print maxLevel
   print universe
+  -- print newUniverse
+  print allActiveCount
+  -- debug
+  -- print $ getPointsFromLevel 2
+  -- print $ findWithDefaultInactive (toKey (-1,0,0)) (snd universe)
+  -- print $ getNeighbors (snd universe) (-1,0,0)

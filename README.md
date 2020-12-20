@@ -3,14 +3,14 @@
 ## Install dependencies (look in package.yaml)
 
 ```sh
-cabal install --lib [lib_name]
+make setup
 ```
 
 ## Run program
 
 ```sh
 cd ../dayX
-runhaskell [dayX-Y].hs
+runhaskell -i../ [dayX-Y].hs
 ```
 
 ## Issues
