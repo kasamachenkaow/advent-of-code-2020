@@ -1,7 +1,6 @@
 # advent-of-code-2020
 
-## Install dependencies (look in package.yaml)
-
+## setup dependencies
 ```sh
 make setup
 ```
